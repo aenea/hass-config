@@ -1,0 +1,79 @@
+# Turn on the pantry light when the door opens
+- alias: Pantry door open
+  trigger:
+    platform: state
+    entity_id: binary_sensor.pantry_door_sensor_sensor
+    to: 'on'
+  actions:
+    # set the automation state
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.pantry_status
+        option: 'Automated'
+    # turn on the light
+    - service: homeassistant.turn_on
+      data:
+        entity_id: switch.pantry_main_lights
+
+# Turn off the pantry light when the door closes
+- alias: Pantry door closed
+  trigger:
+    platform: state
+    entity_id: binary_sensor.pantry_door_sensor_sensor
+    to: 'off'
+  actions:
+    # turn off the light
+    - service: homeassistant.turn_off
+      data:
+        entity_id: switch.pantry_main_lights
+
+# Clear the automation state when the light turns off
+- alias: Clear pantry automation state
+  trigger: 
+    platform: state
+    entity_id: switch.pantry_main_lights
+    to: 'off'
+    from: 'on'
+  actions:
+    # set the automation state
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.pantry_status
+        option: 'Off'
+
+# Set the automation state if the light is manually turned on
+- alias: Set pantry automation state to manual
+  trigger:
+    platform: state
+    entity_id: switch.pantry_main_lights
+    to: 'on'
+    from: 'off'
+  condition:
+    - condition: state
+      entity_id: input_select.pantry_status
+      state: 'Off'
+  actions:
+    # set the automation state to manual
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.pantry_status
+        option: 'Manual'
+
+# Time out the light if it was turned on by automation
+- alias: Pantry light timeout
+  trigger:
+    platform: state
+    entity_id: switch.pantry_main_lights
+    to: 'on'
+    for:
+      minutes: 90
+  condition:
+    - condition: state
+      entity_id: input_select.pantry_status
+      option: 'Automated'
+  actions:
+    # turn off the light
+    - service: homeassistant.turn_off
+      data:
+        entity_id: switch.pantry_main_lights
+
