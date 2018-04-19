@@ -49,9 +49,11 @@
     to: 'on'
     from: 'off'
   condition:
-    - condition: state
-      entity_id: input_select.pantry_status
-      state: 'Off'
+    condition: and
+    conditions: 
+      - condition: state
+        entity_id: input_select.pantry_status
+        state: 'Off'
   action:
     # set the automation state to manual
     - service: input_select.select_option
@@ -68,9 +70,11 @@
     for:
       minutes: 90
   condition:
-    - condition: state
-      entity_id: input_select.pantry_status
-      option: 'Automated'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.pantry_status
+        option: 'Automated'
   action:
     # turn off the light
     - service: homeassistant.turn_off
