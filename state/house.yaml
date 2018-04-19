@@ -1,0 +1,23 @@
+- alias: Set the house mode to Day at sunrise
+  hide_entity: True
+  trigger:
+    platform: sun
+    event: sunrise
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.house_mode
+        option: 'Day'
+
+- alias: Set the house mode to Night at sunset
+  hide_entity: True
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.house_mode
+        option: 'Night'
+
+
