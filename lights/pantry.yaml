@@ -1,5 +1,5 @@
 # Turn on the pantry light when the door opens
-- alias: Pantry door open
+- alias: Pantry - door open
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
@@ -16,7 +16,7 @@
         entity_id: switch.pantry_main_lights
 
 # Turn off the pantry light when the door closes
-- alias: Pantry door closed
+- alias: Pantry - door closed
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
@@ -28,7 +28,7 @@
         entity_id: switch.pantry_main_lights
 
 # Clear the automation state when the light turns off
-- alias: Clear pantry automation state
+- alias: Pantry - clear automation state
   trigger: 
     platform: state
     entity_id: switch.pantry_main_lights
@@ -42,7 +42,7 @@
         option: 'Off'
 
 # Set the automation state if the light is manually turned on
-- alias: Set pantry automation state to manual
+- alias: Pantry - manually turned on
   trigger:
     platform: state
     entity_id: switch.pantry_main_lights
@@ -60,7 +60,7 @@
         option: 'Manual'
 
 # Time out the light if it was turned on by automation
-- alias: Pantry light timeout
+- alias: Pantry - light timeout
   trigger:
     platform: state
     entity_id: switch.pantry_main_lights
