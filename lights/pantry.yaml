@@ -4,7 +4,7 @@
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
     to: 'on'
-  actions:
+  action:
     # set the automation state
     - service: input_select.select_option
       data:
@@ -21,7 +21,7 @@
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
     to: 'off'
-  actions:
+  action:
     # turn off the light
     - service: homeassistant.turn_off
       data:
@@ -34,7 +34,7 @@
     entity_id: switch.pantry_main_lights
     to: 'off'
     from: 'on'
-  actions:
+  action:
     # set the automation state
     - service: input_select.select_option
       data:
@@ -52,7 +52,7 @@
     - condition: state
       entity_id: input_select.pantry_status
       state: 'Off'
-  actions:
+  action:
     # set the automation state to manual
     - service: input_select.select_option
       data:
@@ -71,7 +71,7 @@
     - condition: state
       entity_id: input_select.pantry_status
       option: 'Automated'
-  actions:
+  action:
     # turn off the light
     - service: homeassistant.turn_off
       data:
