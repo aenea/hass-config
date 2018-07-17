@@ -4,15 +4,6 @@
     platform: state
     entity_id: input_boolean.light_second_bathroom
     to: 'on'
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: input_select.automation_mode
-        state: 'Normal'
-      - condition: state
-        entity_id: input_select.automation_mode
-        state: 'Sleep'
   action:
     # turn on the light
     - service: homeassistant.turn_on
@@ -31,18 +22,6 @@
     platform: state
     entity_id: input_boolean.light_second_bathroom
     to: 'off'
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: input_select.automation_mode
-        state: 'Normal'
-      - condition: state
-        entity_id: input_select.automation_mode
-        state: 'Sleep'
-      - condition: state
-        entity_id: input_select.automation_mode
-        state: 'Away'
   action:
     # turn off the light
     - service: homeassistant.turn_off
@@ -62,9 +41,19 @@
     entity_id: group.occupancy_second_bathroom
     to: 'on'
   condition:
-    - condition: state
-      entity_id: light.second_bathroom_main_lights
-      state: 'off'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.second_bathroom_main_lights
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.automation_mode
+            state: 'Normal'
+          - condition: state
+            entity_id: input_select.automation_mode
+            state: 'Sleep'      
   action:
     # turn on the tracker
     - service: homeassistant.turn_on
@@ -80,9 +69,22 @@
     for:
       minutes: 20
   condition:
-    - condition: state
-      entity_id: input_boolean.light_second_bathroom
-      state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.light_second_bathroom
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.automation_mode
+            state: 'Normal'
+          - condition: state
+            entity_id: input_select.automation_mode
+            state: 'Sleep'
+          - condition: state
+            entity_id: input_select.automation_mode
+            state: 'Away'
   action:
     # turn off the tracker
     - service: homeassistant.turn_off
