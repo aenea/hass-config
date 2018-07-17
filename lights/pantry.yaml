@@ -78,3 +78,15 @@
         name: 'pantry light: '
         message: 'time out exceeded'
 
+# Turn the tracker off when the light turns off
+- alias: Pantry - light off
+  trigger:
+    platform: state
+    entity_id: switch.pantry_main_lights
+    to: 'off'
+  action:
+    # turn off the tracker
+    - service: homeassistant.turn_off
+      data:
+        entity_id: input_boolean.light_pantry
+
