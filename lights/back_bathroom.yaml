@@ -1,0 +1,92 @@
+# Turn on the second bathroom light when the tracker turns on
+- alias: Second bathroom - tracker on
+  trigger:
+    platform: state
+    entity_id: input_boolean.light_second_bathroom
+    to: 'on'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.automation_mode
+        state: 'Normal'
+      - condition: state
+        entity_id: input_select.automation_mode
+        state: 'Sleep'
+  action:
+    # turn on the light
+    - service: homeassistant.turn_on
+      data:
+        entity_id: light.second_bathroom_main_lights
+    - service: logbook.log
+      data:
+        entity_id: light.second_bathroom_main_lights
+        domain: 'automation'
+        name: 'second bathroom light: '
+        message: 'turned on by automation'
+
+# Turn off the second bathroom light when the tracker turns off
+- alias: Second bathroom - tracker off
+  trigger:
+    platform: state
+    entity_id: input_boolean.light_second_bathroom
+    to: 'off'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.automation_mode
+        state: 'Normal'
+      - condition: state
+        entity_id: input_select.automation_mode
+        state: 'Sleep'
+      - condition: state
+        entity_id: input_select.automation_mode
+        state: 'Away'
+  action:
+    # turn off the light
+    - service: homeassistant.turn_off
+      data:
+        entity_id: light.second_bathroom_main_lights
+    - service: logbook.log
+      data:
+        entity_id: light.second_bathroom_main_lights
+        domain: 'automation'
+        name: 'second bathroom light: '
+        message: 'turned off by automation'
+
+# Turn the tracker on when the light is off and motion starts
+- alias: Second bathroom - motion starts
+  trigger:
+    platform: state
+    entity_id: group.occupancy_second_bathroom
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: light.second_bathroom_main_lights
+      state: 'off'
+  action:
+    # turn on the tracker
+    - service: homeassistant.turn_on
+      data:
+        entity_id: input_boolean.light_second_bathroom
+
+# Turn the tracker off when motion stops and the tracker is on
+- alias: Second bathroom - motion stops
+  trigger:
+    platform: state
+    entity_id: group.occupancy_second_bathroom
+    to: 'off'
+    for:
+      minutes: 20
+  condition:
+    - condition: state
+      entity_id: input_boolean.light_second_bathroom
+      state: 'on'
+  action:
+    # turn off the tracker
+    - service: homeassistant.turn_off
+      data:
+        entity_id: light.second_bathroom_main_lights
+
+
