@@ -89,6 +89,18 @@
     # turn off the tracker
     - service: homeassistant.turn_off
       data:
-        entity_id: light.second_bathroom_main_lights
+        entity_id: input_boolean.light_second_bathroom
+
+# Turn the tracker off when the light turns off
+- alias: Second bathroom - light off
+  trigger:
+    platform: state
+    entity_id: light.second_bathroom_main_lights
+    to: 'off'
+  action:
+    # turn off the tracker
+    - service: homeassistant.turn_off
+      data:
+        entity_id: input_boolean.light_second_bathroom
 
 
