@@ -1,11 +1,18 @@
+#################################################################
+## Pantry light automations
+#################################################################
+
+
 # Turn on the utility room light when the tracker turns on
 - alias: Utility room - tracker on
+
   trigger:
     platform: state
-    entity_id: input_boolean.light_utility_room
+    entity_id: input_boolean.tracker_utility_room_light
+    from: 'off'
     to: 'on'
+
   action:
-    # turn on the light
     - service: homeassistant.turn_on
       data:
         entity_id: switch.utility_room_main_lights
@@ -16,14 +23,17 @@
         name: 'utility room light: '
         message: 'turned on by automation'
 
+
 # Turn off the utility room light when the tracker turns off
 - alias: Utility room - tracker off
+
   trigger:
     platform: state
-    entity_id: input_boolean.light_utility_room
+    entity_id: input_boolean.tracker_utility_room_light
+    from: 'on'
     to: 'off'
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
         entity_id: switch.utility_room_main_lights
@@ -34,58 +44,74 @@
         name: 'utility light: '
         message: 'turned off by automation'
 
+
 # Turn the tracker on when the door opens
 - alias: Utility room - door open
   trigger:
     platform: state
-    entity_id: binary_sensor.utility_room_door_sensor_sensor
+    entity_id: binary_sensor.utility_room_door_sensor
+    from: 'off'
     to: 'on'
+
   action:
-    # turn on the tracker
     - service: homeassistant.turn_on
       data:
-        entity_id: input_boolean.light_utility_room
+        entity_id: input_boolean.tracker_utility_room_light
+
 
 # Turn the tracker off when the door closes
 - alias: Utility room - door closed
+
   trigger:
     platform: state
-    entity_id: binary_sensor.utility_room_door_sensor_sensor
+    entity_id: binary_sensor.utility_room_door_sensor
+    from: 'on'
     to: 'off'
+
   action:
-    # turn off the light
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_utility_room
+        entity_id: input_boolean.tracker_utility_room_light
+
 
 # Time out the light if it was turned on by automation
 - alias: Utility room - light timeout
+
   trigger:
     platform: state
-    entity_id: input_boolean.light_utility_room
+    entity_id: input_boolean.tracker_utility_room_light
+    from: 'off'
     to: 'on'
     for:
       minutes: 90
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_utility_room
+        entity_id: input_boolean.tracker_utility_room_light
     - service: logbook.log
       data:
         entity_id: switch.utility_room_main_lights
         domain: 'automation'
         name: 'utility room light: '
-        message: 'time out exceeded'
+        message: 'run time exceeded'
+
 
 # Turn the tracker off when the light turns off
 - alias: Utility room - light off
+
   trigger:
     platform: state
     entity_id: switch.utility_room_main_lights
+    from: 'on'
     to: 'off'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.tracker_utility_room_light
+      state: 'on'
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_utility_room
+        entity_id: input_boolean.tracker_utility_room_light
