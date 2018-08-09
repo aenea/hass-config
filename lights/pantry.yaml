@@ -54,7 +54,6 @@
     to: 'on'
 
   action:
-    # turn on the tracker
     - service: homeassistant.turn_on
       data:
         entity_id: input_boolean.tracker_pantry_light
