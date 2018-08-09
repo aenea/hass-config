@@ -26,6 +26,7 @@
 
 # Turn off the pantry light when the tracker turns off
 - alias: Pantry - tracker off
+
   trigger:
     platform: state
     entity_id: input_boolean.tracker_pantry_light
