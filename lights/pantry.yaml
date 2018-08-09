@@ -8,7 +8,7 @@
   
   trigger:
     platform: state
-    entity_id: input_boolean.light_pantry
+    entity_id: input_boolean.tracker_pantry_light
     from: 'off'
     to: 'on'
 
@@ -28,7 +28,7 @@
 - alias: Pantry - tracker off
   trigger:
     platform: state
-    entity_id: input_boolean.light_pantry
+    entity_id: input_boolean.tracker_pantry_light
     from: 'on'
     to: 'off'
 
@@ -57,7 +57,7 @@
     # turn on the tracker
     - service: homeassistant.turn_on
       data:
-        entity_id: input_boolean.light_pantry
+        entity_id: input_boolean.tracker_pantry_light
 
 
 # Turn the tracker off when the door closes
@@ -73,7 +73,7 @@
     # turn off the light
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_pantry
+        entity_id: input_boolean.tracker_pantry_light
 
 
 # Time out the light if it was turned on by automation
@@ -81,7 +81,7 @@
 
   trigger:
     platform: state
-    entity_id: input_boolean.light_pantry
+    entity_id: input_boolean.tracker_pantry_light
     from: 'off'
     to: 'on'
     for:
@@ -90,7 +90,7 @@
   action:
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_pantry
+        entity_id: input_boolean.tracker_pantry_light
     - service: logbook.log
       data:
         entity_id: switch.pantry_main_lights
@@ -107,9 +107,14 @@
     entity_id: switch.pantry_main_lights
     from: 'on'
     to: 'off'
+  
+  condition:
+    - condition: state
+      entity_id: input_boolean.tracker_pantry_light
+      state: 'on'
 
   action:
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.light_pantry
+        entity_id: input_boolean.tracker_pantry_light
 
