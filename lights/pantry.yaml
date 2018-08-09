@@ -1,11 +1,18 @@
+#################################################################
+## Pantry light automations
+#################################################################
+
+
 # Turn on the pantry light when the tracker turns on
 - alias: Pantry - tracker on
+  
   trigger:
     platform: state
     entity_id: input_boolean.light_pantry
+    from: 'off'
     to: 'on'
+
   action:
-    # turn on the light
     - service: homeassistant.turn_on
       data:
         entity_id: switch.pantry_main_lights
@@ -16,14 +23,16 @@
         name: 'pantry light: '
         message: 'turned on by automation'
 
+
 # Turn off the pantry light when the tracker turns off
 - alias: Pantry - tracker off
   trigger:
     platform: state
     entity_id: input_boolean.light_pantry
+    from: 'on'
     to: 'off'
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
         entity_id: switch.pantry_main_lights
@@ -34,40 +43,51 @@
         name: 'pantry light: '
         message: 'turned off by automation'
 
+
 # Turn the tracker on when the door opens
 - alias: Pantry - door open
+
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
+    from: 'off'
     to: 'on'
+
   action:
     # turn on the tracker
     - service: homeassistant.turn_on
       data:
         entity_id: input_boolean.light_pantry
 
+
 # Turn the tracker off when the door closes
 - alias: Pantry - door closed
+
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor_sensor
+    from: 'on'
     to: 'off'
+
   action:
     # turn off the light
     - service: homeassistant.turn_off
       data:
         entity_id: input_boolean.light_pantry
 
+
 # Time out the light if it was turned on by automation
 - alias: Pantry - light timeout
+
   trigger:
     platform: state
     entity_id: input_boolean.light_pantry
+    from: 'off'
     to: 'on'
     for:
       minutes: 90
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
         entity_id: input_boolean.light_pantry
@@ -76,16 +96,19 @@
         entity_id: switch.pantry_main_lights
         domain: 'automation'
         name: 'pantry light: '
-        message: 'time out exceeded'
+        message: 'run time exceeded'
+
 
 # Turn the tracker off when the light turns off
 - alias: Pantry - light off
+
   trigger:
     platform: state
     entity_id: switch.pantry_main_lights
+    from: 'on'
     to: 'off'
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
         entity_id: input_boolean.light_pantry
