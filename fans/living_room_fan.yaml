@@ -1,0 +1,61 @@
+#################################################################
+## Living room fan automations
+#################################################################
+
+
+# Turn on the fan when the tracker turns on
+- alias: Living room fan - tracker on
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tracker_living_room_fan
+      from: 'off'
+      to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+
+  action:
+    - service: ifttt.trigger
+      data:
+        event: 'living_room_fan_on'
+    - service: logbook.log
+      data:
+        entity_id: input_boolean.tracker_living_room_fan
+        domain: 'automation'
+        name: 'living room fan: '
+        message: 'turned on by automation'
+
+
+# Turn off the fan when the tracker turns off
+- alias: Living room fan - tracker off
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tracker_living_room_fan
+      from: 'on'
+      to: 'off'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+
+  action:
+    - service: ifttt.trigger
+      data:
+        event: 'living_room_fan_off'
+    - service: logbook.log
+      data:
+        entity_id: input_boolean.tracker_living_room_fan
+        domain: 'automation'
+        name: 'living room fan: '
+        message: 'turned off by automation'
