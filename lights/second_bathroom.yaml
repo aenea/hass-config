@@ -32,7 +32,8 @@
       from: 'off'
       to: 'on'
     - platform: state
-      entityselect
+      entity_id: input_boolean.tracker_second_bathroom_light
+      from: 'on'
       to: 'off'
       for:
         seconds: 10
