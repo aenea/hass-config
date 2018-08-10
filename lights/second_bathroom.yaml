@@ -7,7 +7,8 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_second_bathroom_light
+    entity_id: input_boolean.tracker_second_bathroom_light
+    from: 'off'
     to: 'on'
 
   action:
@@ -31,7 +32,7 @@
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id: input_select.tracker_second_bathroom_light
+      entityselect
       to: 'off'
       for:
         seconds: 10
@@ -66,7 +67,8 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_second_bathroom_light
+    entity_id: input_boolean.tracker_second_bathroom_light
+    from: 'on'
     to: 'off'
 
   action:
@@ -96,24 +98,27 @@
       state: 'Normal'      
 
   action:
-    - service: input_select.select_option
+    - service: homeassistant.turn_on
       data:
-        entity_id: input_select.tracker_second_bathroom_light
+        entity_id: input_boolean.tracker_second_bathroom_light
         option: 'on'
 
 # Turn the tracker off when motion stops and the tracker is on
 - alias: Second bathroom - motion stops
+
   trigger:
     platform: state
     entity_id: group.occupancy_second_bathroom
+    from: 'on'
     to: 'off'
     for:
       minutes: 20
+
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: input_select.tracker_second_bathrrom_light
+        entity_id: input_boolean.tracker_second_bathroom_light
         state: 'on'
       - condition: or
         conditions:
@@ -126,91 +131,24 @@
           - condition: state
             entity_id: input_select.automation_mode
             state: 'Away'
+
   action:
-    # turn off the tracker
     - service: homeassistant.turn_off
       data:
-        entity_id: input_select.tracker_second_bathrrom_light
+        entity_id: input_boolean.tracker_second_bathroom_light
+
 
 # Turn the tracker off when the light turns off
 - alias: Second bathroom - light off
+
   trigger:
     platform: state
     entity_id: light.second_bathroom_main_lights
+    from: 'on'
     to: 'off'
 
-- alias: Second bathroom - motion starts
-  trigger:
-    platform: state
-    entity_id: group.occupancy_second_bathroom
-    to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: light.second_bathroom_main_lights
-        state: 'off'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_select.automation_mode
-            state: 'Normal'
-          - condition: state
-            entity_id: input_select.automation_mode
-            state: 'Sleep'      
   action:
-    # turn on the tracker
-    - service: homeassistant.turn_on
-      data:
-        entity_id: input_select.tracker_second_bathrrois on
-# Turn the tracker off when motion stops and the tracker is on
-- alias: Second bathroom - motion stops
-  trigger:
-    platform: state
-    entity_id: group.occupancy_second_bathroom
-    to: 'off'
-    for:
-      minutes: 20
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.tracker_second_bathrrom_light
-        state: 'on'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_select.automation_mode
-            state: 'Normal'
-        at reduced  when the tracker is moonlight
-            entity_id: input_select.automation_m moonlight
-            state: 'Sleep'
-          - condition: state
-            entity_id: input_select.automation_mode
-            state: 'Away'
-  actimoonlight:
-    # turn off 
-      condition:
-        - condition: state
-          entity_id: light.second_bathroom_main_lights
-          state: 'off'
-          the tracker
     - service: homeassistant.turn_off
       data:
-        entity_id: input_select.tracker_second_bathrrom_light
-
-brightness_pct: 10
-# Turn the tracker off when the light turns off
-- alias: Second bathroom - light off
-  trigger:
-    platform: state
-    entity_id: light.secomoonlitom_main_lights
-
-
-  action:
-    # turn off the tracker
-    - service: homeassistant.turn_off
-      data:
-        entity_id: input_select.tracker_second_bathrrom_light
-
+        entity_id: input_boolean.tracker_second_bathroom_light
 
