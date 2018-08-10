@@ -1,0 +1,71 @@
+#################################################################
+## Kitchen light automations
+#################################################################
+
+
+- alias: Tracker changed to moonlight
+
+  trigger: 
+    - platform: state
+      entity_id: input_select.tracker_kitchen_lights
+      to: 'moonlight'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.moonlight
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id: light.kitchen_lights
+    - service: homeassistant.turn_on
+      data:
+        entity_id: group.lights_kitchen_moonlight
+        brightness_pct: '10'
+    - service: logbook.log
+      data:
+        entity_id: group.lights_kitchen_moonlight
+        domain: 'automation'
+        name: 'kitchen lights: '
+        message: 'moonlit by automation'
+
+- alias: Change tracker to moonlight if kitchen is not occupied
+
+  trigger:
+    - platform: state
+      entity_id: group.occupancy_kitchen
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 15
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.moonlight
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.tracker_kitchen_lights
+        option: 'moonlight'
+
