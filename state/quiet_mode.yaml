@@ -1,0 +1,48 @@
+#################################################################
+## Put the house in quiet mode
+#################################################################
+
+- alias: Put the house in quiet mode
+  
+  trigger:
+    platform: state
+    entity_id: sensor.hallway_keypad
+    to: '4'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.sleeping
+    from: 'off'
+    to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id: input_boolean.quiet_mode
+    - service: homeassistant.turn_off
+      data:
+        entity_id: input_boolean.moonlight
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.lights_sleep_off
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.all_remotes
+    - service: homeassistant.turn_on
+      data:
+        entity_id: group.night_lights
+        brightness_pct: 2
+    - service: climate.set_hold_mode
+      data:
+        entity_id: climate.home
+        hold_mode: sleep
+    - service: homeassistant.turn_off
+      data:
+        entity_id: input_boolean.tracker_living_room_fan
+    
+
+  
