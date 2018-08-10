@@ -102,7 +102,7 @@
     - service: homeassistant.turn_on
       data:
         entity_id: input_boolean.tracker_second_bathroom_light
-        option: 'on'
+
 
 # Turn the tracker off when motion stops and the tracker is on
 - alias: Second bathroom - motion stops
