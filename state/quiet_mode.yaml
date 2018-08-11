@@ -5,14 +5,13 @@
 - alias: Put the house in quiet mode
   
   trigger:
-    platform: state
-    entity_id: sensor.hallway_keypad
-    to: '4'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.sleeping
-    from: 'off'
-    to: 'on'
+    - platform: state
+      entity_id: sensor.hallway_keypad
+      to: '4'
+    - platform: state
+      entity_id: binary_sensor.sleeping
+      from: 'off'
+      to: 'on'
 
   condition:
     - condition: state
