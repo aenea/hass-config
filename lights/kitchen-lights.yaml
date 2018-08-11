@@ -47,12 +47,43 @@
       from: 'on'
       to: 'off'
       for:
-        minutes: 15
+        minutes: 5
 
   condition:
     - condition: state
       entity_id: input_boolean.moonlight
       state: 'on'
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.tracker_kitchen_lights
+        option: 'moonlight'
+
+
+- alias: Kitchen moonlight activated
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.moonlight
+      from: 'off'
+      to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: group.occupancy_kitchen
+      state: 'off'
+      for:
+        minutes: 5
     - condition: state
       entity_id: input_boolean.guest_mode
       state: 'off'
