@@ -109,7 +109,8 @@
         entity_id: input_select.laundry_room_lights_tracker
         option: 'on'
 
-# Turn tracker to off if motion stops and tracker state is on
+
+# Turn tracker to off if laundry room motion stops and tracker state is on
 - alias: Turn off laundry room light when motion stops
 
   trigger:
@@ -135,9 +136,10 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.laundry_room_lights_tracker
-        state: 'off'
+        option: 'off'
   
-  # Turn tracker to off if motion stops and tracker state is stage
+
+# Turn tracker to off if second bathroom motion stops and tracker state is stage
 - alias: Turn off laundry room light when motion stops
 
   trigger:
@@ -163,6 +165,41 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.laundry_room_lights_tracker
-        state: 'off'
+        option: 'off'
 
-      
+
+# Turn tracker to off when light turns off
+- alias: Laundry room lights off
+
+  trigger:
+    platform: state
+    entity_id: group.laundry_room_lights
+    from: 'on'
+    to: 'off'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        option: 'off'
+
+
+# Track when light is manually turned on
+- alias: Laundry room light manually on
+
+  trigger:
+    platform: state
+    entity_id: group.laundry_room_lights
+    from: 'off'
+    to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: input_select.laundry_room_lights_tracker
+      state: 'off'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        state: 'manual'
