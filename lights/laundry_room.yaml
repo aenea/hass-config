@@ -1,0 +1,17 @@
+#################################################################
+## Laundry room light automations
+#################################################################
+
+
+# Turn on the laundry room light when the tracker turns on
+- alias: Laundry room tracker on
+
+  trigger:
+    platform: state
+    entity_id: input_select.tracker_laundry_room_lights
+    to: 'on'
+
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id: group.pantry_lights
