@@ -55,9 +55,10 @@
     to: 'on'
 
   action:
-    - service: homeassistant.turn_on
+    - service: input_select.select_option
       data:
         entity_id: input_select.tracker_pantry_light
+        option: 'on'
 
 
 # Turn the tracker off when the door closes
@@ -71,9 +72,10 @@
 
   action:
     # turn off the light
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
         entity_id: input_select.tracker_pantry_light
+        option: 'off'
 
 
 # Time out the light if it was turned on by automation
@@ -88,9 +90,10 @@
       minutes: 90
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
         entity_id: input_select.tracker_pantry_light
+        option: 'off'
     - service: logbook.log
       data:
         entity_id: switch.pantry_main_lights
@@ -114,7 +117,8 @@
       state: 'on'
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
         entity_id: input_select.tracker_pantry_light
+        option: 'off'
 
