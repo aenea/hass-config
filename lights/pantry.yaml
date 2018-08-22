@@ -8,7 +8,7 @@
   
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_light
+    entity_id: input_select.tracker_pantry_lights
     from: 'off'
     to: 'on'
 
@@ -29,7 +29,7 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_light
+    entity_id: input_select.tracker_pantry_lights
     from: 'on'
     to: 'off'
 
@@ -57,7 +57,7 @@
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_light
+        entity_id: input_select.tracker_pantry_lights
         option: 'on'
 
 
@@ -74,7 +74,7 @@
     # turn off the light
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_light
+        entity_id: input_select.tracker_pantry_lights
         option: 'off'
 
 
@@ -83,7 +83,7 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_light
+    entity_id: input_select.tracker_pantry_lights
     from: 'off'
     to: 'on'
     for:
@@ -92,7 +92,7 @@
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_light
+        entity_id: input_select.tracker_pantry_lights
         option: 'off'
     - service: logbook.log
       data:
@@ -113,12 +113,12 @@
   
   condition:
     - condition: state
-      entity_id: input_select.tracker_pantry_light
+      entity_id: input_select.tracker_pantry_lights
       state: 'on'
 
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_light
+        entity_id: input_select.tracker_pantry_lights
         option: 'off'
 
