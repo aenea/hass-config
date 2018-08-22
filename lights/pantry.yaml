@@ -15,13 +15,7 @@
   action:
     - service: homeassistant.turn_on
       data:
-        entity_id: switch.pantry_main_lights
-    - service: logbook.log
-      data:
-        entity_id: switch.pantry_main_lights
-        domain: 'automation'
-        name: 'pantry light: '
-        message: 'turned on by automation'
+        entity_id: group.pantry_lights
 
 
 # Turn off the pantry light when the tracker turns off
@@ -36,13 +30,7 @@
   action:
     - service: homeassistant.turn_off
       data:
-        entity_id: switch.pantry_main_lights
-    - service: logbook.log
-      data:
-        entity_id: switch.pantry_main_lights
-        domain: 'automation'
-        name: 'pantry light: '
-        message: 'turned off by automation'
+        entity_id: group.pantry_lights
 
 
 # Turn the tracker on when the door opens
@@ -71,7 +59,6 @@
     to: 'off'
 
   action:
-    # turn off the light
     - service: input_select.select_option
       data:
         entity_id: input_select.tracker_pantry_lights
@@ -94,12 +81,6 @@
       data:
         entity_id: input_select.tracker_pantry_lights
         option: 'off'
-    - service: logbook.log
-      data:
-        entity_id: switch.pantry_main_lights
-        domain: 'automation'
-        name: 'pantry light: '
-        message: 'run time exceeded'
 
 
 # Turn the tracker off when the light turns off
@@ -107,7 +88,7 @@
 
   trigger:
     platform: state
-    entity_id: switch.pantry_main_lights
+    entity_id: group.pantry_lights
     from: 'on'
     to: 'off'
   
@@ -121,4 +102,3 @@
       data:
         entity_id: input_select.tracker_pantry_lights
         option: 'off'
-
