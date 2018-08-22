@@ -4,7 +4,7 @@
 
 
 # Turn on the laundry room lights when the tracker changes to on
-- alias: Laundry room tracker on
+- alias: Laundry room lights - tracker on
 
   trigger:
     platform: state
@@ -18,7 +18,7 @@
 
 
 # Turn off the laundry room lights when the tracker changes to off
-- alias: Laundry room tracker off
+- alias: Laundry room lights - tracker off
 
   trigger:
     platform: state
@@ -32,7 +32,7 @@
 
 
 # Stage the laundry room lights when the tracker changes to stage
-- alias: Laundry room tracker stage
+- alias: Laundry room lights - tracker stage
 
   trigger:
     platform: state
@@ -47,7 +47,7 @@
 
 
 # Stage the light when there is motion in the bathroom
-- alias: Stage laundry room light
+- alias: Laundry room lights - stage active
 
   trigger:
     platform: state
@@ -83,7 +83,7 @@
 
 
 # Turn tracker to on when there is motion in the laundry room
-- alias: Turn on laundry room light
+- alias: Laundry room lights - motion on
 
   trigger:
     platform: state
@@ -111,7 +111,7 @@
 
 
 # Turn tracker to off if laundry room motion stops and tracker state is on
-- alias: Turn off laundry room light when motion stops
+- alias: Laundry room lights - laundry motion off
 
   trigger:
     platform: state
@@ -140,7 +140,7 @@
   
 
 # Turn tracker to off if second bathroom motion stops and tracker state is stage
-- alias: Turn off laundry room light when motion stops
+- alias: Laundry room lights - bathroom motion off
 
   trigger:
     platform: state
@@ -169,7 +169,7 @@
 
 
 # Turn tracker to off when light turns off
-- alias: Laundry room lights off
+- alias: Laundry room lights - off
 
   trigger:
     platform: state
@@ -185,7 +185,7 @@
 
 
 # Track when light is manually turned on
-- alias: Laundry room light manually on
+- alias: Laundry room lights - manual on
 
   trigger:
     platform: state
