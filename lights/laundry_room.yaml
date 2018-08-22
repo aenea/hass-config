@@ -3,15 +3,166 @@
 #################################################################
 
 
-# Turn on the laundry room light when the tracker turns on
+# Turn on the laundry room lights when the tracker changes to on
 - alias: Laundry room tracker on
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_laundry_room_lights
+    entity_id: input_select.laundry_room_lights_tracker
     to: 'on'
 
   action:
     - service: homeassistant.turn_on
       data:
         entity_id: group.laundry_room_lights
+
+
+# Turn off the laundry room lights when the tracker changes to off
+- alias: Laundry room tracker off
+
+  trigger:
+    platform: state
+    entity_id: input_select.laundry_room_lights_tracker
+    to: 'off'
+
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.laundry_room_lights
+
+
+# Stage the laundry room lights when the tracker changes to stage
+- alias: Laundry room tracker stage
+
+  trigger:
+    platform: state
+    entity_id: input_select.laundry_room_lights_tracker
+    to: 'stage'
+
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id: group.laundry_room_lights
+        brightness_pct: 20
+
+
+# Stage the light when there is motion in the bathroom
+- alias: Stage laundry room light
+
+  trigger:
+    platform: state
+    entity_id: group.second_bathroom_occupancy
+    to: 'on'
+
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.guest_mode
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.home_occupancy
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.quiet_mode
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.laundry_room_lights_tracker
+            state: 'off'
+          - condition: state
+            entity_id: input_select.laundry_room_lights_tracker
+            state: 'stage'
+  
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        option: 'stage'
+
+
+# Turn tracker to on when there is motion in the laundry room
+- alias: Turn on laundry room light
+
+  trigger:
+    platform: state
+    entity_id: group.laundry_room_occupancy
+    to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+    - condition: template
+      value_template: "{{ not is_state('input_select.laundry_room_lights_tracker', 'manual') }}"
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        option: 'on'
+
+# Turn tracker to off if motion stops and tracker state is on
+- alias: Turn off laundry room light when motion stops
+
+  trigger:
+    platform: state
+    entity_id: group.laundry_room_occupancy
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 10
+
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.quiet_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_select.laundry_room_lights_tracker
+    state: 'on'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        state: 'off'
+  
+  # Turn tracker to off if motion stops and tracker state is stage
+- alias: Turn off laundry room light when motion stops
+
+  trigger:
+    platform: state
+    entity_id: group.second_bathroom_occupancy
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 10
+
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.quiet_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_select.laundry_room_lights_tracker
+    state: 'stage'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.laundry_room_lights_tracker
+        state: 'off'
+
+      
