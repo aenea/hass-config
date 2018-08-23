@@ -33,10 +33,7 @@
       state: 'on'
     - condition: state
       entity_id: group.kitchen_occupancy
-      from: 'on'
-      to: 'off'
-      for:
-        minutes: 10
+      state: 'off'
 
   action:
     - service: homeassistant.turn_off
