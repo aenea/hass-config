@@ -4,7 +4,41 @@
 
 
 # Turn off the kitchen lights when motion stops at night
-- alias: Kitchen lights - motion stops at night
+- alias: Kitchen lights - off when motion stops
+
+  trigger:
+    - platform: state
+      entity_id: group.kitchen_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 10
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.moonlight
+      state: 'off'
+
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.kitchen_lights
+
+
+# Moonlight the kitchen lights when motion stops at night
+- alias: Kitchen lights - moonlight when motion stops
 
   trigger:
     - platform: state
@@ -14,7 +48,7 @@
       for:
         minutes: 10
     - platform: state
-      entity_id: input_boolean.night_mode
+      entity_id: input_boolean.moonlight
       from: 'off'
       to: 'on'
 
@@ -30,6 +64,9 @@
       state: 'off'
     - condition: state
       entity_id: input_boolean.night_mode
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.moonlight
       state: 'on'
     - condition: state
       entity_id: group.kitchen_occupancy
@@ -38,45 +75,10 @@
   action:
     - service: homeassistant.turn_off
       data:
-        entity_id: group.kitchen_lights
-
-
-# Moonlight the kitchen when the lights turn off at night
-- alias: Kitchen lights - moonlight kitchen
-
-  trigger: 
-    - platform: state
-      entity_id: group.kitchen_lights
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: input_boolean.moonlight
-      from: 'off'
-      to: 'on'
-
-  condition:
-    - condition: state
-      entity_id: input_boolean.guest_mode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.home_occupancy
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.quiet_mode
-      state: 'off'
-    - condition: state
-      entity_id: group.kitchen_lights
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.moonlight
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.night_mode
-      state: 'on'
-  
-  action:
+        entity_id: light.kitchen_light_switch_level
     - service: homeassistant.turn_on
       data:
         entity_id: group.kitchen_lights_moonlight
-        brightness_pct: '10'
-        transition: 30
+        brightness_pct: 10
+        transition: 20
+
