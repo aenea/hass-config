@@ -82,7 +82,7 @@
 
   trigger:
     platform: state
-    entity_id: group.occupancy_second_bathroom
+    entity_id: group.second_bathroom_occupancy
     from: 'off'
     to: 'on'
 
@@ -124,7 +124,7 @@
 
   trigger:
     platform: state
-    entity_id: group.occupancy_second_bathroom
+    entity_id: group.second_bathroom_occupancy
     from: 'on'
     to: 'off'
     for:
