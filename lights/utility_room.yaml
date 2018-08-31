@@ -8,20 +8,14 @@
 
   trigger:
     platform: state
-    entity_id: input_boolean.tracker_utility_room_light
+    entity_id: input_select.utility_room_lights_tracker
     from: 'off'
     to: 'on'
 
   action:
     - service: homeassistant.turn_on
       data:
-        entity_id: switch.utility_room_main_lights
-    - service: logbook.log
-      data:
-        entity_id: switch.utility_room_main_lights
-        domain: 'automation'
-        name: 'utility room light: '
-        message: 'turned on by automation'
+        entity_id: group.utility_room_lights
 
 
 # Turn off the utility room light when the tracker turns off
@@ -29,20 +23,14 @@
 
   trigger:
     platform: state
-    entity_id: input_boolean.tracker_utility_room_light
+    entity_id: input_select.utility_room_lights_tracker
     from: 'on'
     to: 'off'
 
   action:
     - service: homeassistant.turn_off
       data:
-        entity_id: switch.utility_room_main_lights
-    - service: logbook.log
-      data:
-        entity_id: switch.utility_room_main_lights
-        domain: 'automation'
-        name: 'utility light: '
-        message: 'turned off by automation'
+        entity_id: group.utility_room_lights
 
 
 # Turn the tracker on when the door opens
@@ -54,9 +42,16 @@
     to: 'on'
 
   action:
-    - service: homeassistant.turn_on
+    - service: input_select.select_option
       data:
-        entity_id: input_boolean.tracker_utility_room_light
+        entity_id: input_select.utility_room_lights_tracker
+        option: 'on'
+    - service: logbook.log
+      data:
+        entity_id: group.utility_room_lights
+        domain: 'automation'
+        name: 'utility room light: '
+        message: 'turned on by door sensor'
 
 
 # Turn the tracker off when the door closes
@@ -69,9 +64,16 @@
     to: 'off'
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
-        entity_id: input_boolean.tracker_utility_room_light
+        entity_id: input_select.utility_room_lights_tracker
+        option: 'off'
+    - service: logbook.log
+      data:
+        entity_id: group.utility_room_lights
+        domain: 'automation'
+        name: 'utility room light: '
+        message: 'turned off by door sensor'
 
 
 # Time out the light if it was turned on by automation
@@ -79,19 +81,20 @@
 
   trigger:
     platform: state
-    entity_id: input_boolean.tracker_utility_room_light
+    entity_id: input_select.utility_room_lights_tracker
     from: 'off'
     to: 'on'
     for:
       minutes: 90
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
-        entity_id: input_boolean.tracker_utility_room_light
+        entity_id: input_select.utility_room_lights_tracker
+        option: 'off'
     - service: logbook.log
       data:
-        entity_id: switch.utility_room_main_lights
+        entity_id: group.utility_room_lights
         domain: 'automation'
         name: 'utility room light: '
         message: 'run time exceeded'
@@ -102,16 +105,24 @@
 
   trigger:
     platform: state
-    entity_id: switch.utility_room_main_lights
+    entity_id: group.utility_room_lights
     from: 'on'
     to: 'off'
 
   condition:
     - condition: state
-      entity_id: input_boolean.tracker_utility_room_light
+      entity_id: input_select.utility_room_lights_tracker
       state: 'on'
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
-        entity_id: input_boolean.tracker_utility_room_light
+        entity_id: input_select.utility_room_lights_tracker
+        option: 'off'
+    - service: logbook.log
+      data:
+        entity_id: group.utility_room_lights
+        domain: 'automation'
+        name: 'utility room light: '
+        message: 'turned off manually'
+
