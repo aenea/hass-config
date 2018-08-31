@@ -8,7 +8,7 @@
   
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_lights
+    entity_id: input_select.pantry_lights_tracker
     from: 'off'
     to: 'on'
 
@@ -23,7 +23,7 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_lights
+    entity_id: input_select.pantry_lights_tracker
     from: 'on'
     to: 'off'
 
@@ -45,7 +45,7 @@
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_lights
+        entity_id: input_select.pantry_lights_tracker
         option: 'on'
 
 
@@ -61,7 +61,7 @@
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_lights
+        entity_id: input_select.pantry_lights_tracker
         option: 'off'
 
 
@@ -70,7 +70,7 @@
 
   trigger:
     platform: state
-    entity_id: input_select.tracker_pantry_lights
+    entity_id: input_select.pantry_lights_tracker
     from: 'off'
     to: 'on'
     for:
@@ -79,7 +79,7 @@
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_lights
+        entity_id: input_select.pantry_lights_tracker
         option: 'off'
 
 
@@ -94,11 +94,11 @@
   
   condition:
     - condition: state
-      entity_id: input_select.tracker_pantry_lights
+      entity_id: input_select.pantry_lights_tracker
       state: 'on'
 
   action:
     - service: input_select.select_option
       data:
-        entity_id: input_select.tracker_pantry_lights
+        entity_id: input_select.pantry_lights_tracker
         option: 'off'
