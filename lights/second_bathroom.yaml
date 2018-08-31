@@ -11,9 +11,10 @@
     to: 'on'
 
   action:
-    - service: homeassistant.turn_on
+    - service: input_select.select_option
       data:
         entity_id: group.second_bathroom_lights
+        option: 'on'
 
 
 # Turn off the second bathroom light when the tracker turns off
@@ -23,18 +24,12 @@
     platform: state
     entity_id: input_select.second_bathroom_lights_tracker
     from: 'on'
-    to: 'off'
 
   action:
-    - service: homeassistant.turn_off
+    - service: input_select.select_option
       data:
         entity_id: group.second_bathroom_lights
-    - service: logbook.log
-      data:
-        entity_id: group.second_bathroom_lights
-        domain: 'automation'
-        name: 'second bathroom light: '
-        message: 'turned off by automation'
+        option: 'off'
 
 
 # Turn on the second bathroom light at reduced level when moonlighting is active
