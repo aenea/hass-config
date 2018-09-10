@@ -11,10 +11,10 @@
     to: 'on'
 
   action:
-    - service: input_select.select_option
+    - service: homeassistant.turn_on
       data:
         entity_id: group.second_bathroom_lights
-        option: 'on'
+        brightness_pct: 100
 
 
 # Turn off the second bathroom light when the tracker turns off
@@ -26,10 +26,9 @@
     from: 'on'
 
   action:
-    - service: input_select.select_option
+    - service: homeassistant.turn_off
       data:
         entity_id: group.second_bathroom_lights
-        option: 'off'
 
 
 # Turn on the second bathroom light at reduced level when moonlighting is active

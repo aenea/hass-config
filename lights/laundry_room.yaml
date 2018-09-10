@@ -15,6 +15,7 @@
     - service: homeassistant.turn_on
       data:
         entity_id: group.laundry_room_lights
+        brightness_pct: 100
 
 
 # Turn off the laundry room lights when the tracker changes to off
