@@ -8,8 +8,7 @@
 
   trigger:
     - platform: state
-      entity_id: input_boolean.tracker_living_room_fan
-      from: 'off'
+      entity_id: input_boolean.living_room_fan_tracker
       to: 'on'
 
   action:
@@ -23,8 +22,7 @@
 
   trigger:
     - platform: state
-      entity_id: input_boolean.tracker_living_room_fan
-      from: 'on'
+      entity_id: input_boolean.living_room_fan_tracker
       to: 'off'
 
   action:
