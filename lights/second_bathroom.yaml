@@ -38,7 +38,6 @@
   trigger:
     - platform: state
       entity_id: input_boolean.moonlight
-      from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_select.second_bathroom_lights_tracker
@@ -68,7 +67,7 @@
       data:
         entity_id: group.second_bathroom_lights
         brightness_pct: 10
-        transition: 10
+        transition: 20
     - service: logbook.log
       data:
         entity_id: group.second_bathroom_lights
@@ -83,7 +82,6 @@
   trigger:
     platform: state
     entity_id: group.second_bathroom_occupancy
-    from: 'off'
     to: 'on'
 
   condition:
@@ -117,7 +115,7 @@
         entity_id: group.second_bathroom_lights
         domain: 'automation'
         name: 'second bathroom lights: '
-        message: 'turned on by automation'
+        message: 'turned on by second bathroom motion'
 
 # Turn the tracker off when motion stops and the tracker is on
 - alias: Second bathroom - motion stops
@@ -125,7 +123,6 @@
   trigger:
     platform: state
     entity_id: group.second_bathroom_occupancy
-    from: 'on'
     to: 'off'
     for:
       minutes: 20
@@ -156,7 +153,12 @@
       data:
         entity_id: input_select.second_bathroom_lights_tracker
         option: 'off'
-
+    - service: logbook.log
+      data:
+        entity_id: group.second_bathroom_lights
+        domain: 'automation'
+        name: 'second bathroom lights: '
+        message: 'turned off by second bathroom motion'
 
 # Turn the tracker off when the light turns off
 - alias: Second bathroom - light off
@@ -164,7 +166,6 @@
   trigger:
     platform: state
     entity_id: group.second_bathroom_lights
-    from: 'on'
     to: 'off'
 
   condition:

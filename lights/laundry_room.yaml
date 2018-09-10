@@ -80,6 +80,12 @@
       data:
         entity_id: input_select.laundry_room_lights_tracker
         option: 'stage'
+    - service: logbook.log
+      data:
+        entity_id: group.laundry_room_lights
+        domain: 'automation'
+        name: 'laundry room lights: '
+        message: 'staged by second bathroom motion'
 
 
 # Turn tracker to on when there is motion in the laundry room
@@ -108,6 +114,12 @@
       data:
         entity_id: input_select.laundry_room_lights_tracker
         option: 'on'
+    - service: logbook.log
+      data:
+        entity_id: group.laundry_room_lights
+        domain: 'automation'
+        name: 'laundry room lights: '
+        message: 'turned on by laundry room motion'        
 
 
 # Turn tracker to off if laundry room motion stops and tracker state is on
@@ -116,7 +128,6 @@
   trigger:
     platform: state
     entity_id: group.laundry_room_occupancy
-    from: 'on'
     to: 'off'
     for:
       minutes: 10
@@ -137,7 +148,12 @@
       data:
         entity_id: input_select.laundry_room_lights_tracker
         option: 'off'
-  
+    - service: logbook.log
+      data:
+        entity_id: group.laundry_room_lights
+        domain: 'automation'
+        name: 'laundry room lights: '
+        message: 'turned off by laundry room motion'
 
 # Turn tracker to off if second bathroom motion stops and tracker state is stage
 - alias: Laundry room lights - bathroom motion off
@@ -145,7 +161,6 @@
   trigger:
     platform: state
     entity_id: group.second_bathroom_occupancy
-    from: 'on'
     to: 'off'
     for:
       minutes: 10
@@ -166,7 +181,12 @@
       data:
         entity_id: input_select.laundry_room_lights_tracker
         option: 'off'
-
+    - service: logbook.log
+      data:
+        entity_id: group.laundry_room_lights
+        domain: 'automation'
+        name: 'laundry room lights: '
+        message: 'stage turned off by second bathroom motion'
 
 # Turn tracker to off when light turns off
 - alias: Laundry room lights - off
@@ -174,7 +194,6 @@
   trigger:
     platform: state
     entity_id: group.laundry_room_lights
-    from: 'on'
     to: 'off'
 
   action:
@@ -190,7 +209,6 @@
   trigger:
     platform: state
     entity_id: group.laundry_room_lights
-    from: 'off'
     to: 'on'
 
   condition:
@@ -203,3 +221,9 @@
       data:
         entity_id: input_select.laundry_room_lights_tracker
         state: 'manual'
+    - service: logbook.log
+      data:
+        entity_id: group.laundry_room_lights
+        domain: 'automation'
+        name: 'laundry room lights: '
+        message: 'turned on manually'

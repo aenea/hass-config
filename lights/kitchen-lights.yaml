@@ -9,7 +9,6 @@
   trigger:
     - platform: state
       entity_id: group.kitchen_occupancy
-      from: 'on'
       to: 'off'
       for:
         minutes: 10
@@ -35,6 +34,12 @@
     - service: homeassistant.turn_off
       data:
         entity_id: group.kitchen_lights
+    - service: logbook.log
+      data:
+        entity_id: group.kitchen_lights
+        domain: 'automation'
+        name: 'kitchen lights: '
+        message: 'turned off for no motion'
 
 
 # Moonlight the kitchen lights when motion stops at night
@@ -43,13 +48,11 @@
   trigger:
     - platform: state
       entity_id: group.kitchen_occupancy
-      from: 'on'
       to: 'off'
       for:
         minutes: 10
     - platform: state
       entity_id: input_boolean.moonlight
-      from: 'off'
       to: 'on'
 
   condition:
@@ -81,4 +84,9 @@
         entity_id: group.kitchen_lights_moonlight
         brightness_pct: 10
         transition: 20
-
+    - service: logbook.log
+      data:
+        entity_id: group.kitchen_lights_moonlight
+        domain: 'automation'
+        name: 'kitchen lights: '
+        message: 'moonlit by automation'
