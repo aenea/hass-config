@@ -9,7 +9,6 @@
   trigger:
     platform: state
     entity_id: input_select.pantry_lights_tracker
-    from: 'off'
     to: 'on'
 
   action:
@@ -24,7 +23,6 @@
   trigger:
     platform: state
     entity_id: input_select.pantry_lights_tracker
-    from: 'on'
     to: 'off'
 
   action:
@@ -39,7 +37,6 @@
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor
-    from: 'off'
     to: 'on'
 
   action:
@@ -47,6 +44,12 @@
       data:
         entity_id: input_select.pantry_lights_tracker
         option: 'on'
+    - service: logbook.log
+      data:
+        entity_id: group.pantry_lights
+        domain: 'automation'
+        name: 'pantry light: '
+        message: 'turned on by door sensor'
 
 
 # Turn the tracker off when the door closes
@@ -55,7 +58,6 @@
   trigger:
     platform: state
     entity_id: binary_sensor.pantry_door_sensor
-    from: 'on'
     to: 'off'
 
   action:
@@ -63,6 +65,12 @@
       data:
         entity_id: input_select.pantry_lights_tracker
         option: 'off'
+    - service: logbook.log
+      data:
+        entity_id: group.pantry_lights
+        domain: 'automation'
+        name: 'pantry light: '
+        message: 'turned off by door sensor'
 
 
 # Time out the light if it was turned on by automation
@@ -71,7 +79,6 @@
   trigger:
     platform: state
     entity_id: input_select.pantry_lights_tracker
-    from: 'off'
     to: 'on'
     for:
       minutes: 90
@@ -81,6 +88,12 @@
       data:
         entity_id: input_select.pantry_lights_tracker
         option: 'off'
+    - service: logbook.log
+      data:
+        entity_id: group.pantry_lights
+        domain: 'automation'
+        name: 'pantry light: '
+        message: 'turned off by maximum runtime'
 
 
 # Turn the tracker off when the light turns off
@@ -89,7 +102,6 @@
   trigger:
     platform: state
     entity_id: group.pantry_lights
-    from: 'on'
     to: 'off'
   
   condition:
@@ -102,3 +114,9 @@
       data:
         entity_id: input_select.pantry_lights_tracker
         option: 'off'
+    - service: logbook.log
+      data:
+        entity_id: group.pantry_lights
+        domain: 'automation'
+        name: 'pantry light: '
+        message: 'turned off manually'        
