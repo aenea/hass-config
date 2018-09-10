@@ -12,27 +12,10 @@
       from: 'off'
       to: 'on'
 
-  condition:
-    - condition: state
-      entity_id: input_boolean.guest_mode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.home_occupancy
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.quiet_mode
-      state: 'off'
-
   action:
     - service: ifttt.trigger
       data:
         event: 'living_room_fan_on'
-    - service: logbook.log
-      data:
-        entity_id: input_boolean.tracker_living_room_fan
-        domain: 'automation'
-        name: 'living room fan: '
-        message: 'turned on by automation'
 
 
 # Turn off the fan when the tracker turns off
@@ -44,11 +27,6 @@
       from: 'on'
       to: 'off'
 
-  condition:
-    - condition: state
-      entity_id: input_boolean.guest_mode
-      state: 'off'
-
   action:
     - service: ifttt.trigger
       data:
@@ -59,3 +37,47 @@
         domain: 'automation'
         name: 'living room fan: '
         message: 'turned off by automation'
+
+
+# Turn on the fan when the temperature in the living room >= 71
+- alias: Living room fan - turn on
+
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.living_room_temperature
+      above: 70.9
+    - platform: state
+      entity_id: input_boolean.home_occupancy
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.quiet_mode
+      to: 'off'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.home_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.quiet_mode
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.living_room_temperature
+      above: 70.9
+    - condition: state
+      entity_id: input_select.living_room_fan_tracker
+      state: 'off'
+
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.living_room_fan_tracker
+        option: 'on'
+    - service: logbook.log
+      data:
+        entity_id: input_boolean.tracker_living_room_fan
+        domain: 'automation'
+        name: 'living room fan: '
+        message: 'turned on by automation'
