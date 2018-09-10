@@ -9,7 +9,6 @@
   trigger:
     platform: state
     entity_id: input_select.utility_room_lights_tracker
-    from: 'off'
     to: 'on'
 
   action:
@@ -24,7 +23,6 @@
   trigger:
     platform: state
     entity_id: input_select.utility_room_lights_tracker
-    from: 'on'
     to: 'off'
 
   action:
@@ -38,7 +36,6 @@
   trigger:
     platform: state
     entity_id: binary_sensor.utility_room_door_sensor
-    from: 'off'
     to: 'on'
 
   action:
@@ -60,7 +57,6 @@
   trigger:
     platform: state
     entity_id: binary_sensor.utility_room_door_sensor
-    from: 'on'
     to: 'off'
 
   action:
@@ -82,7 +78,6 @@
   trigger:
     platform: state
     entity_id: input_select.utility_room_lights_tracker
-    from: 'off'
     to: 'on'
     for:
       minutes: 90
@@ -106,7 +101,6 @@
   trigger:
     platform: state
     entity_id: group.utility_room_lights
-    from: 'on'
     to: 'off'
 
   condition:
